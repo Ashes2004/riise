@@ -150,22 +150,17 @@ export default function Header() {
                 <Search className="h-5 w-5" />
               </motion.button>
 
-              <Link
-                href="/login"
-                className="px-4 py-2 text-sm font-medium text-white/80 transition-colors duration-200 hover:text-white"
-              >
-                Sign In
-              </Link>
+             
 
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 <Link
-                  href="/portal"
+                  href="/login"
                   className="inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-[#9b87f5] to-[#7c3aed] px-5 py-2.5 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:shadow-[0_0_20px_rgba(155,135,245,0.5)] hover:from-[#9b87f5]/90 hover:to-[#7c3aed]/90"
                 >
-                  <span>Access Portal</span>
+                  <span>Sign In</span>
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </motion.div>
@@ -223,19 +218,13 @@ export default function Header() {
                   className="space-y-3 border-t border-white/10 pt-6"
                   variants={mobileItemVariants}
                 >
+                  
                   <Link
                     href="/login"
-                    className="block w-full rounded-lg py-3 text-center font-medium text-white transition-colors duration-200 hover:bg-white/10"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    href="/portal"
                     className="block w-full rounded-lg bg-gradient-to-r from-[#9b87f5] to-[#7c3aed] py-3 text-center font-medium text-white transition-all duration-200 hover:shadow-[0_0_20px_rgba(155,135,245,0.5)]"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Access Portal
+                    Sign In
                   </Link>
                 </motion.div>
               </div>
