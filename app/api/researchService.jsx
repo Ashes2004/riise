@@ -26,7 +26,7 @@ getAccessTokenFromCookie() {
       const error = await response.json().catch(() => ({ message: 'Network error' }));
       throw new Error(error.message || `HTTP error! status: ${response.status}`);
     }
-    console.log("response: " , response.json());
+   
     
     return response.json();
   }

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Eye, EyeOff, Mail, Lock, User, Building2, Lightbulb, Rocket, Award } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const RIISEAuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
