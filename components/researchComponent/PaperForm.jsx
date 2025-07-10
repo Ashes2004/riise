@@ -45,8 +45,11 @@ const PaperForm = ({ paper, onSave, onCancel, isLoading }) => {
 
   const isEditing = !!paper;
 
+  const inputClass =
+    "w-full px-3 py-2 bg-[#1f1530] border border-[#ffffff1a] rounded-lg text-white placeholder-gray-300 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500";
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6"  >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-white mb-2">
@@ -58,7 +61,7 @@ const PaperForm = ({ paper, onSave, onCancel, isLoading }) => {
             value={formData.title}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 bg-background border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+            className={inputClass}
             placeholder="Enter paper title"
           />
         </div>
@@ -73,7 +76,7 @@ const PaperForm = ({ paper, onSave, onCancel, isLoading }) => {
             onChange={handleChange}
             required
             rows={4}
-            className="w-full px-3 py-2 bg-background border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary resize-none"
+            className={`${inputClass} resize-none`}
             placeholder="Enter paper abstract"
           />
         </div>
@@ -88,7 +91,7 @@ const PaperForm = ({ paper, onSave, onCancel, isLoading }) => {
             value={formData.authors}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 bg-background border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+            className={inputClass}
             placeholder="Enter authors (comma-separated)"
           />
         </div>
@@ -102,7 +105,7 @@ const PaperForm = ({ paper, onSave, onCancel, isLoading }) => {
             name="publication_date"
             value={formData.publication_date}
             onChange={handleChange}
-            className="w-full px-3 py-2 bg-background border border-white/20 rounded-lg text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+            className={inputClass}
           />
         </div>
 
@@ -115,7 +118,7 @@ const PaperForm = ({ paper, onSave, onCancel, isLoading }) => {
             name="doi"
             value={formData.doi}
             onChange={handleChange}
-            className="w-full px-3 py-2 bg-background border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+            className={inputClass}
             placeholder="10.1234/journal.2024.001"
           />
         </div>
@@ -128,7 +131,7 @@ const PaperForm = ({ paper, onSave, onCancel, isLoading }) => {
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className="w-full px-3 py-2 bg-background border border-white/20 rounded-lg text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+            className={inputClass}
           >
             <option value="Draft">Draft</option>
             <option value="Under Review">Under Review</option>
@@ -148,7 +151,7 @@ const PaperForm = ({ paper, onSave, onCancel, isLoading }) => {
             value={formData.citations}
             onChange={handleChange}
             min="0"
-            className="w-full px-3 py-2 bg-background border border-white/20 rounded-lg text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+            className={inputClass}
             placeholder="0"
           />
         </div>
@@ -162,7 +165,7 @@ const PaperForm = ({ paper, onSave, onCancel, isLoading }) => {
             name="scholar_id"
             value={formData.scholar_id}
             onChange={handleChange}
-            className="w-full px-3 py-2 bg-background border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+            className={inputClass}
             placeholder="scholar123"
           />
         </div>
@@ -175,7 +178,7 @@ const PaperForm = ({ paper, onSave, onCancel, isLoading }) => {
             name="source"
             value={formData.source}
             onChange={handleChange}
-            className="w-full px-3 py-2 bg-background border border-white/20 rounded-lg text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+            className={inputClass}
           >
             <option value="manual">Manual</option>
             <option value="scholarly">Scholarly</option>
@@ -196,7 +199,7 @@ const PaperForm = ({ paper, onSave, onCancel, isLoading }) => {
         <button
           type="submit"
           disabled={isLoading}
-          className="flex items-center gap-2 px-6 py-2 bg-primary hover:bg-primaryDark rounded-lg text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-6 py-2 bg-violet-600 hover:bg-violet-700 rounded-lg text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Save size={16} />
           {isLoading ? 'Saving...' : isEditing ? 'Update Paper' : 'Add Paper'}

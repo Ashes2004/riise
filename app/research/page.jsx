@@ -215,7 +215,7 @@ const ResearchDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen text-white p-6" 
+    <div className="min-h-screen  p-6" 
          style={{ 
            background: 'linear-gradient(135deg, #0a0613 0%, #150d27 25%, #1a0f2e 50%, #0a0613 75%, #150d27 100%)',
            backgroundSize: '400% 400%',

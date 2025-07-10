@@ -41,8 +41,11 @@ const Modal = ({ isOpen, onClose, title, children, size = 'default' }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className={`bg-surface border border-white/10 rounded-lg w-full ${getSizeClasses()} max-h-[90vh] flex flex-col`}>
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+      <div className={`bg-surface border border-white/10 rounded-lg w-full ${getSizeClasses()} max-h-[90vh] flex flex-col`} style={{ 
+           background: 'linear-gradient(135deg, #0a0613 0%, #150d27 25%, #1a0f2e 50%, #0a0613 75%, #150d27 100%)',
+          
+         }}>
         <div className="flex items-center justify-between p-6 border-b border-white/10 flex-shrink-0">
           <h2 className="text-xl font-semibold text-white">{title}</h2>
           <button

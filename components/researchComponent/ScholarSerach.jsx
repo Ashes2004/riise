@@ -11,7 +11,8 @@ const ScholarSearch = ({ onSearch, isLoading, onCancel }) => {
       onSearch(searchType, searchValue.trim());
     }
   };
-
+  const inputClass =
+    "w-full px-3 py-2 bg-[#1f1530] border border-[#ffffff1a] rounded-lg text-white placeholder-gray-300 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500";
   return (
     <div className="space-y-4">
       <div>
@@ -24,8 +25,9 @@ const ScholarSearch = ({ onSearch, isLoading, onCancel }) => {
             onClick={() => setSearchType('scholar')}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
               searchType === 'scholar'
-                ? 'bg-primary text-white border-primary'
-                : 'bg-background text-white/80 border-white/20 hover:bg-white/10'
+                ? 'bg-[#1f1530] text-white'
+                : 'bg-primary text-white border-primary'
+
             }`}
           >
             🎓 Scholar ID
@@ -35,8 +37,8 @@ const ScholarSearch = ({ onSearch, isLoading, onCancel }) => {
             onClick={() => setSearchType('author')}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
               searchType === 'author'
-                ? 'bg-primary text-white border-primary'
-                : 'bg-background text-white/80 border-white/20 hover:bg-white/10'
+                ? 'bg-[#1f1530] text-white'
+                : 'bg-primary text-white border-primary'
             }`}
           >
             <User size={16} />
@@ -61,7 +63,7 @@ const ScholarSearch = ({ onSearch, isLoading, onCancel }) => {
                   ? 'Enter Google Scholar ID (e.g., scholar123)' 
                   : 'Enter author name (e.g., John Smith)'
               }
-              className="w-full pl-10 pr-4 py-2 bg-background border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              className={`${inputClass} w-full pl-10 pr-4 py-2 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary`}
               disabled={isLoading}
             />
           </div>
