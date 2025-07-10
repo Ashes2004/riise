@@ -1,33 +1,45 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, ArrowRight, Search } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, ArrowRight, Search } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
 const navItems = [
   { name: "Home", href: "/" },
   { name: "Research", href: "/research" },
   { name: "IPR Services", href: "/ipr" },
   { name: "Innovation", href: "/innovation" },
-  { name: "Startups", href: "/startups" },
-  { name: "Resources", href: "/resources" },
-  { name: "Contact", href: "/contact" }
-]
+  { name: "Startups", href: "/startup" },
+  { name: "Contact", href: "/contact" },
+];
 
 export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [hoveredItem, setHoveredItem] = useState(null)
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10)
+    // Check if 'user_session' cookie exists
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+    const hasSession = cookies.some((cookie) =>
+      cookie.startsWith("user_session=")
+    );
+
+    if (hasSession) {
+      setIsLogin(true);
     }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    console.log("haslogin", hasSession);
+  }, []);
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0, y: -20 },
@@ -36,21 +48,21 @@ export default function Header() {
       y: 0,
       transition: {
         duration: 0.6,
-        staggerChildren: 0.1
-      }
-    }
-  }
+        staggerChildren: 0.1,
+      },
+    },
+  };
 
   const itemVariants = {
     hidden: { opacity: 0, y: -10 },
-    visible: { opacity: 1, y: 0 }
-  }
+    visible: { opacity: 1, y: 0 },
+  };
 
   const mobileMenuVariants = {
     closed: {
       opacity: 0,
       x: "100%",
-      transition: { duration: 0.3, ease: "easeInOut" }
+      transition: { duration: 0.3, ease: "easeInOut" },
     },
     open: {
       opacity: 1,
@@ -58,15 +70,15 @@ export default function Header() {
       transition: {
         duration: 0.3,
         ease: "easeInOut",
-        staggerChildren: 0.1
-      }
-    }
-  }
+        staggerChildren: 0.1,
+      },
+    },
+  };
 
   const mobileItemVariants = {
     closed: { opacity: 0, x: 20 },
-    open: { opacity: 1, x: 0 }
-  }
+    open: { opacity: 1, x: 0 },
+  };
 
   return (
     <>
@@ -91,7 +103,13 @@ export default function Header() {
               <Link href="/" className="flex items-center space-x-3">
                 <div className="relative">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#ededee] to-[#bababb] shadow-lg">
-                    <Image src="https://i.ibb.co/wh4CtXq7/RIISE-Logo-White.png" alt="RIISE Logo" width={40} height={40} className="h-10 w-10" />
+                    <Image
+                      src="https://i.ibb.co/wh4CtXq7/RIISE-Logo-White.png"
+                      alt="RIISE Logo"
+                      width={40}
+                      height={40}
+                      className="h-10 w-10"
+                    />
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -106,7 +124,7 @@ export default function Header() {
             </motion.div>
 
             <nav className="hidden items-center space-x-1 lg:flex">
-              {navItems.map(item => (
+              {navItems.map((item) => (
                 <motion.div
                   key={item.name}
                   variants={itemVariants}
@@ -128,7 +146,7 @@ export default function Header() {
                         transition={{
                           type: "spring",
                           stiffness: 400,
-                          damping: 30
+                          damping: 30,
                         }}
                       />
                     )}
@@ -150,19 +168,29 @@ export default function Header() {
                 <Search className="h-5 w-5" />
               </motion.button>
 
-             
-
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <Link
-                  href="/login"
-                  className="inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-[#9b87f5] to-[#7c3aed] px-5 py-2.5 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:shadow-[0_0_20px_rgba(155,135,245,0.5)] hover:from-[#9b87f5]/90 hover:to-[#7c3aed]/90"
-                >
-                  <span>Sign In</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
+                {isLogin ? (
+                  <div className="flex items-center space-x-2 border-4 border-gradient-to-r from-[#da87f5] to-[#7c3aed] rounded-full">
+                    <Image
+                      src="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg"
+                      alt="User Avatar"
+                      width={36}
+                      height={36}
+                      className="rounded-full border border-white"
+                    />
+                  </div>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-[#9b87f5] to-[#7c3aed] px-5 py-2.5 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:shadow-[0_0_20px_rgba(155,135,245,0.5)] hover:from-[#9b87f5]/90 hover:to-[#7c3aed]/90"
+                  >
+                    <span>Sign In</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                )}
               </motion.div>
             </motion.div>
 
@@ -201,7 +229,7 @@ export default function Header() {
             >
               <div className="space-y-6 p-6">
                 <div className="space-y-1">
-                  {navItems.map(item => (
+                  {navItems.map((item) => (
                     <motion.div key={item.name} variants={mobileItemVariants}>
                       <Link
                         href={item.href}
@@ -218,14 +246,25 @@ export default function Header() {
                   className="space-y-3 border-t border-white/10 pt-6"
                   variants={mobileItemVariants}
                 >
-                  
-                  <Link
-                    href="/login"
-                    className="block w-full rounded-lg bg-gradient-to-r from-[#9b87f5] to-[#7c3aed] py-3 text-center font-medium text-white transition-all duration-200 hover:shadow-[0_0_20px_rgba(155,135,245,0.5)]"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Sign In
-                  </Link>
+                  {isLogin ? (
+                    <div className="flex items-center space-x-2">
+                      <Image
+                        src="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg"
+                        alt="User Avatar"
+                        width={36}
+                        height={36}
+                        className="rounded-full border border-white"
+                      />
+                    </div>
+                  ) : (
+                    <Link
+                      href="/login"
+                      className="inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-[#9b87f5] to-[#7c3aed] px-5 py-2.5 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:shadow-[0_0_20px_rgba(155,135,245,0.5)] hover:from-[#9b87f5]/90 hover:to-[#7c3aed]/90"
+                    >
+                      <span>Sign In</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  )}
                 </motion.div>
               </div>
             </motion.div>
@@ -233,5 +272,5 @@ export default function Header() {
         )}
       </AnimatePresence>
     </>
-  )
+  );
 }

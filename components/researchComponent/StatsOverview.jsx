@@ -12,9 +12,9 @@ const StatsOverview = ({ papers }) => {
       label: 'Total Papers', 
       value: totalPapers, 
       icon: FileText, 
-      color: 'text-primary',
+      color: 'text-white',
       bgColor: 'bg-primary/10',
-      borderColor: 'border-primary/30'
+      borderColor: 'border-gray-200'
     },
     { 
       label: 'Published', 

@@ -21,12 +21,38 @@ const IPRPage = () => {
 
   const BASE_URL = 'https://riise.onrender.com/api/v1/ipr';
 
-  // Fetch IPRs from API
+  
+  function getAccessTokenFromCookie() {
+    const match = document.cookie.match(/(?:^|; )access_token=([^;]*)/);
+    if (match) {
+      console.log("✅ access_token found in cookie:", decodeURIComponent(match[1]));
+      return decodeURIComponent(match[1]);
+    } else {
+      console.warn("❌ access_token is not set in cookie.");
+      return null;
+    }
+  }
+
+  function checkCookie() {
+    const token = getAccessTokenFromCookie();
+    if (!token) {
+      console.warn("⚠️ Cookie does not contain access_token.");
+    }
+  }
+
+  useEffect(()=>{
+
+     checkCookie()
+  },[])
   const fetchIPRs = async () => {
     try {
       setLoading(true);
       const response = await fetch(BASE_URL, {
         method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          
+        },
         credentials:'include'
       });
 
@@ -70,8 +96,9 @@ const IPRPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+          
         },
+        credentials:'include',
         body: JSON.stringify(formData)
       });
 
@@ -98,8 +125,9 @@ const IPRPage = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+          
         },
+        credentials:'include',
         body: JSON.stringify(updatedData)
       });
     } catch (error) {
@@ -113,7 +141,7 @@ const IPRPage = () => {
         const response = await fetch(`${BASE_URL}/delete-ipr/${ipr.ipr_id}`, {
           method: 'DELETE',
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+            
           }
         });
 

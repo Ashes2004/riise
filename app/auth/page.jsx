@@ -65,39 +65,45 @@ const RIISEAuthPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    setLoading(true);
-    setMessage('');
+  setLoading(true);
+  setMessage('');
 
-    try {
-      const endpoint = isLogin ? '/api/v1/users/login' : '/api/v1/users/signup';
-      const payload = isLogin 
-        ? { email: formData.email, password: formData.password }
-        : formData;
+  try {
+    const endpoint = isLogin ? '/api/v1/users/login' : '/api/v1/users/signup';
+    const payload = isLogin 
+      ? { email: formData.email, password: formData.password }
+      : formData;
 
-      const response = await fetch(`${base_url}${endpoint}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
+    const response = await fetch(`${base_url}${endpoint}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(payload),
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (response.ok) {
-        setMessage(`${isLogin ? 'Login' : 'Registration'} successful!`);
-        // Here you would typically redirect or store auth token
-        console.log('Success:', data);
-      } else {
-        setMessage(data.message || `${isLogin ? 'Login' : 'Registration'} failed`);
-      }
-    } catch (error) {
-      setMessage('Network error. Please try again.');
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
+    if (response.ok) {
+      setMessage(`${isLogin ? 'Login' : 'Registration'} successful!`);
+      console.log('Success:', data);
+
+      // Set cookie that expires in 3600 seconds (1 hour)
+      const expires = new Date(Date.now() + 3600 * 1000).toUTCString();
+      document.cookie = `user_session=${data.token || 'dummy_token'}; expires=${expires}; path=/;`;
+
+    } else {
+      setMessage(data.message || `${isLogin ? 'Login' : 'Registration'} failed`);
     }
-  };
+  } catch (error) {
+    setMessage('Network error. Please try again.');
+    console.error('Error:', error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const toggleAuthMode = () => {
     setIsLogin(!isLogin);

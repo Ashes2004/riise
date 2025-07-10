@@ -2,19 +2,32 @@ const API_BASE_URL = 'https://riise.onrender.com/api/v1/research';
 
 class ResearchService {
 
-  checkCookie() {
-    if (!document.cookie || document.cookie.trim() === "") {
-      console.warn("⚠️ Cookie is not set");
+getAccessTokenFromCookie() {
+    const match = document.cookie.match(/(?:^|; )access_token=([^;]*)/);
+    if (match) {
+      console.log("✅ access_token found in cookie:", decodeURIComponent(match[1]));
+      return decodeURIComponent(match[1]);
     } else {
-      console.log("✅ Cookie found:", document.cookie);
+      console.warn("❌ access_token is not set in cookie.");
+      return null;
     }
   }
+
+  checkCookie() {
+    const token = this.getAccessTokenFromCookie();
+    if (!token) {
+      console.warn("⚠️ Cookie does not contain access_token.");
+    }
+  }
+
 
   async handleResponse(response) {
     if (!response.ok) {
       const error = await response.json().catch(() => ({ message: 'Network error' }));
       throw new Error(error.message || `HTTP error! status: ${response.status}`);
     }
+    console.log("response: " , response.json());
+    
     return response.json();
   }
 

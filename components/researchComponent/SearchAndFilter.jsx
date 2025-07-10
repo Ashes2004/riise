@@ -20,7 +20,7 @@ const SearchAndFilter = ({
               placeholder="Search papers by title, authors, or DOI..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-background border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full pl-10 pr-4 py-2 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
             />
           </div>
         </div>
@@ -29,7 +29,7 @@ const SearchAndFilter = ({
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 bg-background border border-white/10 rounded-lg text-white focus:outline-none focus:border-primary"
+            className="px-3 py-2 border border-white/10 rounded-lg text-white focus:outline-none focus:border-primary"
           >
             <option value="">All Status</option>
             <option value="Published">Published</option>
@@ -42,7 +42,7 @@ const SearchAndFilter = ({
           <select
             value={sourceFilter}
             onChange={(e) => setSourceFilter(e.target.value)}
-            className="px-3 py-2 bg-background border border-white/10 rounded-lg text-white focus:outline-none focus:border-primary"
+            className="px-3 py-2  border border-white/10 rounded-lg text-white focus:outline-none focus:border-primary"
           >
             <option value="">All Sources</option>
             <option value="manual">Manual</option>
