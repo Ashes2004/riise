@@ -10,6 +10,7 @@ import PageHeader from '@/components/iprComponent/PageHeader';
 import EmptyState from '@/components/iprComponent/EmptyState';
 import ErrorBanner from '@/components/iprComponent/ErrorBanner';
 import LoadingSpinner from '@/components/iprComponent/LoadingSpinner';
+import { useRouter } from 'next/navigation';
 
 const IPRPage = () => {
   const [iprs, setIPRs] = useState([]);
@@ -22,6 +23,19 @@ const IPRPage = () => {
   const BASE_URL = 'https://riise.onrender.com/api/v1/ipr';
 
   
+    const router = useRouter();
+  
+    useEffect(() => {
+      // Check if 'user_session' cookie exists
+      const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+      const hasSession = cookies.some((cookie) =>
+        cookie.startsWith("user_session=")
+      );
+  
+      if (!hasSession) {
+        router.push("/auth"); // Redirect to /auth if no session cookie
+      }
+    }, []);
   function getAccessTokenFromCookie() {
     const match = document.cookie.match(/(?:^|; )access_token=([^;]*)/);
     if (match) {

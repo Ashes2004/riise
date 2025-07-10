@@ -11,6 +11,7 @@ import {
   Eye,
 } from "lucide-react";
 import Header from "@/components/universal/Header";
+import { useRouter } from "next/navigation";
 
 const API_BASE_URL = "https://riise.onrender.com";
 
@@ -543,7 +544,20 @@ function StartupHub() {
   const [startupToEdit, setStartupToEdit] = useState(null);
   const [startupToView, setStartupToView] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
+ 
+   const router = useRouter();
+ 
+   useEffect(() => {
+     // Check if 'user_session' cookie exists
+     const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+     const hasSession = cookies.some((cookie) =>
+       cookie.startsWith("user_session=")
+     );
+ 
+     if (!hasSession) {
+       router.push("/auth"); // Redirect to /auth if no session cookie
+     }
+   }, []);
   useEffect(() => {
     const userEmail = sessionStorage.getItem('userEmail');
     if (!userEmail || userEmail == 'undefined') {
