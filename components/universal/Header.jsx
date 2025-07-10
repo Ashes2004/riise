@@ -184,7 +184,7 @@ export default function Header() {
                   </div>
                 ) : (
                   <Link
-                    href="/login"
+                    href="/auth"
                     className="inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-[#9b87f5] to-[#7c3aed] px-5 py-2.5 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:shadow-[0_0_20px_rgba(155,135,245,0.5)] hover:from-[#9b87f5]/90 hover:to-[#7c3aed]/90"
                   >
                     <span>Sign In</span>
@@ -258,7 +258,7 @@ export default function Header() {
                     </div>
                   ) : (
                     <Link
-                      href="/login"
+                      href="/auth"
                       className="inline-flex items-center space-x-2 rounded-lg bg-gradient-to-r from-[#9b87f5] to-[#7c3aed] px-5 py-2.5 text-sm font-medium text-white shadow-lg transition-all duration-200 hover:shadow-[0_0_20px_rgba(155,135,245,0.5)] hover:from-[#9b87f5]/90 hover:to-[#7c3aed]/90"
                     >
                       <span>Sign In</span>
