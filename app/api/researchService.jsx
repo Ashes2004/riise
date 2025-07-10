@@ -1,10 +1,15 @@
-// API Service for Research Paper Management
-const API_BASE_URL = 'http://127.0.0.1:8000/api/v1/research';
+const API_BASE_URL = 'https://riise.onrender.com/api/v1/research';
 
 class ResearchService {
 
+  checkCookie() {
+    if (!document.cookie || document.cookie.trim() === "") {
+      console.warn("⚠️ Cookie is not set");
+    } else {
+      console.log("✅ Cookie found:", document.cookie);
+    }
+  }
 
-  // Helper method to handle API responses
   async handleResponse(response) {
     if (!response.ok) {
       const error = await response.json().catch(() => ({ message: 'Network error' }));
@@ -13,8 +18,8 @@ class ResearchService {
     return response.json();
   }
 
-  // GET /api/v1/research - Fetch all research papers
   async getAllPapers() {
+    this.checkCookie(); // Check before request
     try {
       const response = await fetch(API_BASE_URL, {
         method: 'GET',
@@ -27,12 +32,15 @@ class ResearchService {
     }
   }
 
-  // POST /add-paper - Add a new research paper
   async addPaper(paperData) {
+    this.checkCookie();
     try {
       const response = await fetch(`${API_BASE_URL}/add-paper`, {
         method: 'POST',
         credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(paperData)
       });
       return await this.handleResponse(response);
@@ -42,12 +50,15 @@ class ResearchService {
     }
   }
 
-  // PUT /update-paper/:id - Update an existing research paper
   async updatePaper(paperId, paperData) {
+    this.checkCookie();
     try {
       const response = await fetch(`${API_BASE_URL}/update-paper/${paperId}`, {
         method: 'PUT',
         credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(paperData)
       });
       return await this.handleResponse(response);
@@ -57,8 +68,8 @@ class ResearchService {
     }
   }
 
-  // DELETE /delete-paper/:id - Delete a research paper
   async deletePaper(paperId) {
+    this.checkCookie();
     try {
       const response = await fetch(`${API_BASE_URL}/delete-paper/${paperId}`, {
         method: 'DELETE',
@@ -71,8 +82,8 @@ class ResearchService {
     }
   }
 
-  // GET /fetch-by-id/:id - Fetch research papers by Google Scholar ID
   async fetchByScholarId(scholarId) {
+    this.checkCookie();
     try {
       const response = await fetch(`${API_BASE_URL}/fetch-by-id/${scholarId}`, {
         method: 'GET',
@@ -85,8 +96,8 @@ class ResearchService {
     }
   }
 
-  // GET /fetch-by-name - Search for research papers by author name
   async fetchByAuthorName(authorName) {
+    this.checkCookie();
     try {
       const response = await fetch(`${API_BASE_URL}/fetch-by-name?name=${encodeURIComponent(authorName)}`, {
         method: 'GET',
@@ -99,8 +110,8 @@ class ResearchService {
     }
   }
 
-  // GET /paper/:id - Fetch a specific paper by ID
   async getPaperById(paperId) {
+    this.checkCookie();
     try {
       const response = await fetch(`${API_BASE_URL}/paper/${paperId}`, {
         method: 'GET',

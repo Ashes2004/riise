@@ -19,7 +19,7 @@ const IPRPage = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const BASE_URL = 'http://localhost:3000/api/v1/ipr';
+  const BASE_URL = 'https://riise.onrender.com/api/v1/ipr';
 
   // Fetch IPRs from API
   const fetchIPRs = async () => {
@@ -27,10 +27,7 @@ const IPRPage = () => {
       setLoading(true);
       const response = await fetch(BASE_URL, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-        }
+        credentials:'include'
       });
 
       if (!response.ok) {
