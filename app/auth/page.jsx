@@ -43,7 +43,7 @@ const RIISEAuthPage = () => {
     {
       title: "Intellectual Property",
       subtitle: "Protecting and managing innovative ideas",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop"
+      image: "https://legodesk.com/wp-content/uploads/2018/09/An-Introduction-to-IPR-resized-1.jpg"
     },
     {
       title: "Startup Ecosystem",
