@@ -65,6 +65,14 @@ getAccessTokenFromCookie() {
 
   async updatePaper(paperId, paperData) {
     this.checkCookie();
+      const updatedPaperData = {
+      abstract: paperData.abstract,
+      authors: paperData.authors,
+      doi: paperData.doi,
+      publication_date: paperData.publication_date,
+      status: paperData.status,
+      title: paperData.title
+    };
     try {
       const response = await fetch(`${API_BASE_URL}/update-paper/${paperId}`, {
         method: 'PUT',
@@ -72,7 +80,7 @@ getAccessTokenFromCookie() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(paperData)
+        body: JSON.stringify(updatedPaperData)
       });
       return await this.handleResponse(response);
     } catch (error) {
