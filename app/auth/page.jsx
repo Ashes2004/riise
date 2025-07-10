@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Eye, EyeOff, Mail, Lock, User, Building2, Lightbulb, Rocket, Award } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const RIISEAuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,6 +16,20 @@ const RIISEAuthPage = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
+  
+    const router = useRouter();
+  
+    useEffect(() => {
+      // Check if 'user_session' cookie exists
+      const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+      const hasSession = cookies.some((cookie) =>
+        cookie.startsWith("user_session=")
+      );
+  
+      if (hasSession) {
+        router.push("/"); // Redirect to /auth if no session cookie
+      }
+    }, []);
 //   const base_url = 'http://127.0.0.1:8000';
   const base_url = 'https://riise.onrender.com';
 
@@ -92,6 +107,7 @@ const RIISEAuthPage = () => {
       // Set cookie that expires in 3600 seconds (1 hour)
       const expires = new Date(Date.now() + 3600 * 1000).toUTCString();
       document.cookie = `user_session=${data.token || 'dummy_token'}; expires=${expires}; path=/;`;
+      router.push('/');
 
     } else {
       setMessage(data.message || `${isLogin ? 'Login' : 'Registration'} failed`);
