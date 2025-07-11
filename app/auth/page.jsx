@@ -129,7 +129,7 @@ const RIISEAuthPage = () => {
           data.token || "dummy_token"
         }; expires=${expires}; path=/;`;
         document.cookie = `user_role=${
-          data.user.role || 'user'
+          data?.user?.role || 'user'
         }; expires=${expires}; path=/;`;
        
         router.push("/");
