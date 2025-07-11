@@ -30,8 +30,6 @@ const RIISEAuthPage = () => {
 
   const router = useRouter();
 
-
-
   useEffect(() => {
     // Check if 'user_session' cookie exists
     const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
@@ -128,11 +126,12 @@ const RIISEAuthPage = () => {
         document.cookie = `user_session=${
           data.token || "dummy_token"
         }; expires=${expires}; path=/;`;
-        document.cookie = `user_role=${
-          data?.user?.role || 'user'
+        if (isLogin) {
+          document.cookie = `user_role=${data.user.role}} 
         }; expires=${expires}; path=/;`;
-       
-        router.push("/");
+
+          router.push("/");
+        }
       } else {
         setMessage(
           data.message || `${isLogin ? "Login" : "Registration"} failed`
