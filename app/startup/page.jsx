@@ -222,7 +222,7 @@ const StartupViewModal = ({ isOpen, onClose, startup }) => {
   );
 };
 
-const StartupCard = ({ startup, onEdit, onView }) => {
+const StartupCard = ({ startup, onEdit, onView  , isAdmin}) => {
   return (
     <div className="bg-slate-800/50 backdrop-blur-sm border border-purple-500/20 rounded-lg p-4 hover:bg-slate-800/70 hover:border-purple-400/30 transition-all duration-300">
       <div className="flex justify-between items-start">
@@ -256,13 +256,13 @@ const StartupCard = ({ startup, onEdit, onView }) => {
           >
             <Eye size={16} />
           </button>
-          <button
+          {isAdmin && (<button
             onClick={() => onEdit(startup)}
             className="text-blue-400 hover:text-blue-300 transition-colors"
             title="Edit"
           >
             <Edit size={16} />
-          </button>
+          </button>)}
         </div>
       </div>
       <div className="mt-3 pt-3 border-t border-purple-500/20">
@@ -544,7 +544,7 @@ function StartupHub() {
   const [startupToEdit, setStartupToEdit] = useState(null);
   const [startupToView, setStartupToView] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
- 
+  const [IsAdmin , setIsAdmin] = useState(false);
    const router = useRouter();
  
    useEffect(() => {
@@ -553,6 +553,20 @@ function StartupHub() {
      const hasSession = cookies.some((cookie) =>
        cookie.startsWith("user_session=")
      );
+
+      const userRoleCookie = cookies.find((cookie) =>
+      cookie.startsWith("user_role=")
+    );
+
+    const userRole = userRoleCookie
+      ? decodeURIComponent(userRoleCookie.split("=")[1])
+      : null;
+
+    if (userRole !== "user") {
+      setIsAdmin(true);
+    }
+
+    console.log("userRole:", userRole);
  
      if (!hasSession) {
        router.push("/auth"); // Redirect to /auth if no session cookie
@@ -715,6 +729,7 @@ function StartupHub() {
                       startup={startup}
                       onEdit={editStartup}
                       onView={viewStartup}
+                      isAdmin = {IsAdmin}
                     />
                   ))}
                 </div>

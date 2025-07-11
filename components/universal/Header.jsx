@@ -12,7 +12,6 @@ const navItems = [
   { name: "IPR Services", href: "/ipr" },
   { name: "Innovation", href: "/innovation" },
   { name: "Startups", href: "/startup" },
-  { name: "Contact", href: "/contact" },
 ];
 
 export default function Header() {
@@ -160,20 +159,14 @@ export default function Header() {
               className="hidden items-center space-x-3 lg:flex"
               variants={itemVariants}
             >
-              <motion.button
-                className="rounded-lg p-2 text-white/60 transition-colors duration-200 hover:bg-white/10 hover:text-white"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Search className="h-5 w-5" />
-              </motion.button>
+              
 
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 {isLogin ? (
-                  <div className="flex items-center space-x-2 border-4 border-gradient-to-r from-[#da87f5] to-[#7c3aed] rounded-full">
+                  <Link href="/profile" className="flex items-center space-x-2 border-4 border-gradient-to-r from-[#da87f5] to-[#7c3aed] rounded-full">
                     <Image
                       src="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg"
                       alt="User Avatar"
@@ -181,7 +174,7 @@ export default function Header() {
                       height={36}
                       className="rounded-full border border-white"
                     />
-                  </div>
+                  </Link>
                 ) : (
                   <Link
                     href="/auth"
@@ -247,7 +240,7 @@ export default function Header() {
                   variants={mobileItemVariants}
                 >
                   {isLogin ? (
-                    <div className="flex items-center space-x-2">
+                    <Link href= "/profile" className="flex items-center space-x-2">
                       <Image
                         src="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg"
                         alt="User Avatar"
@@ -255,7 +248,7 @@ export default function Header() {
                         height={36}
                         className="rounded-full border border-white"
                       />
-                    </div>
+                    </Link>
                   ) : (
                     <Link
                       href="/auth"

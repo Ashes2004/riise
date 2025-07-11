@@ -73,6 +73,7 @@ getAccessTokenFromCookie() {
       status: paperData.status,
       title: paperData.title
     };
+    
     try {
       const response = await fetch(`${API_BASE_URL}/update-paper/${paperId}`, {
         method: 'PUT',

@@ -27,7 +27,7 @@ const ResearchDashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [IsAdmin , setIsAdmin] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -36,7 +36,19 @@ const ResearchDashboard = () => {
     const hasSession = cookies.some((cookie) =>
       cookie.startsWith("user_session=")
     );
+     const userRoleCookie = cookies.find((cookie) =>
+      cookie.startsWith("user_role=")
+    );
 
+    const userRole = userRoleCookie
+      ? decodeURIComponent(userRoleCookie.split("=")[1])
+      : null;
+
+    if (userRole !== "user") {
+      setIsAdmin(true);
+    }
+
+    console.log("userRole:", userRole);
     if (!hasSession) {
       router.push("/auth"); // Redirect to /auth if no session cookie
     }
@@ -312,6 +324,7 @@ const ResearchDashboard = () => {
               onEdit={openEditPaperModal}
               onDelete={handleDeletePaper}
               onView={openViewPaperModal}
+              isAdmin = {IsAdmin}
             />
           ))}
         </div>

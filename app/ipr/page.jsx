@@ -1,16 +1,17 @@
-"use client"
-import React, { useState, useEffect } from 'react';
-import { FileText, CheckCircle, Clock, TrendingUp } from 'lucide-react';
-import Header from '@/components/universal/Header';
-import StatsCard from '@/components/iprComponent/StatsCard';
-import IPRTable from '@/components/iprComponent/IPRTable';
-import AddIPRModal from '@/components/iprComponent/AddIPRModal';
-import SearchBar from '@/components/iprComponent/SearchBar';
-import PageHeader from '@/components/iprComponent/PageHeader';
-import EmptyState from '@/components/iprComponent/EmptyState';
-import ErrorBanner from '@/components/iprComponent/ErrorBanner';
-import LoadingSpinner from '@/components/iprComponent/LoadingSpinner';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useState, useEffect } from "react";
+import { FileText, CheckCircle, Clock, TrendingUp } from "lucide-react";
+import Header from "@/components/universal/Header";
+import StatsCard from "@/components/iprComponent/StatsCard";
+import IPRTable from "@/components/iprComponent/IPRTable";
+import AddIPRModal from "@/components/iprComponent/AddIPRModal";
+import SearchBar from "@/components/iprComponent/SearchBar";
+import PageHeader from "@/components/iprComponent/PageHeader";
+import EmptyState from "@/components/iprComponent/EmptyState";
+import ErrorBanner from "@/components/iprComponent/ErrorBanner";
+import LoadingSpinner from "@/components/iprComponent/LoadingSpinner";
+import EditIPRModal from "@/components/iprComponent/EditIPRModal";
+import { useRouter } from "next/navigation";
 
 const IPRPage = () => {
   const [iprs, setIPRs] = useState([]);
@@ -18,56 +19,50 @@ const IPRPage = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [currentEditIPR, setCurrentEditIPR] = useState(null);
 
-  const BASE_URL = 'https://riise.onrender.com/api/v1/ipr';
+  const BASE_URL = "https://riise.onrender.com/api/v1/ipr";
 
-  
-    const router = useRouter();
-  
-    useEffect(() => {
-      // Check if 'user_session' cookie exists
-      const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
-      const hasSession = cookies.some((cookie) =>
-        cookie.startsWith("user_session=")
-      );
-  
-      if (!hasSession) {
-        router.push("/auth"); // Redirect to /auth if no session cookie
-      }
-    }, []);
-  function getAccessTokenFromCookie() {
-    const match = document.cookie.match(/(?:^|; )access_token=([^;]*)/);
-    if (match) {
-      console.log("✅ access_token found in cookie:", decodeURIComponent(match[1]));
-      return decodeURIComponent(match[1]);
-    } else {
-      console.warn("❌ access_token is not set in cookie.");
-      return null;
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check if 'user_session' cookie exists
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+    const hasSession = cookies.some((cookie) =>
+      cookie.startsWith("user_session=")
+    );
+
+    const userRoleCookie = cookies.find((cookie) =>
+      cookie.startsWith("user_role=")
+    );
+
+    const userRole = userRoleCookie
+      ? decodeURIComponent(userRoleCookie.split("=")[1])
+      : null;
+
+    if (userRole !== "user") {
+      setIsAdmin(true);
     }
-  }
 
-  function checkCookie() {
-    const token = getAccessTokenFromCookie();
-    if (!token) {
-      console.warn("⚠️ Cookie does not contain access_token.");
+    console.log("userRole:", userRole);
+
+    if (!hasSession) {
+      router.push("/auth"); // Redirect to /auth if no session cookie
     }
-  }
+  }, []);
 
-  useEffect(()=>{
-
-     checkCookie()
-  },[])
   const fetchIPRs = async () => {
     try {
       setLoading(true);
-      const response = await fetch(BASE_URL, {
-        method: 'GET',
+      const response = await fetch(`${BASE_URL}/`, {
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          
+          "Content-Type": "application/json",
         },
-        credentials:'include'
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -78,8 +73,8 @@ const IPRPage = () => {
       setIPRs(data);
       setFilteredIPRs(data);
     } catch (error) {
-      setError('Failed to fetch IPRs: ' + error.message);
-      console.error('Error fetching IPRs:', error);
+      setError("Failed to fetch IPRs: " + error.message);
+      console.error("Error fetching IPRs:", error);
     } finally {
       setLoading(false);
     }
@@ -91,14 +86,17 @@ const IPRPage = () => {
 
   // Search functionality
   useEffect(() => {
-    if (searchTerm === '') {
+    if (searchTerm === "") {
       setFilteredIPRs(iprs);
     } else {
-      const filtered = iprs.filter(ipr =>
-        ipr.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        ipr.ipr_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (ipr.ipr_number && ipr.ipr_number.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (ipr.status && ipr.status.toLowerCase().includes(searchTerm.toLowerCase()))
+      const filtered = iprs.filter(
+        (ipr) =>
+          ipr.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          ipr.ipr_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (ipr.ipr_number &&
+            ipr.ipr_number.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (ipr.status &&
+            ipr.status.toLowerCase().includes(searchTerm.toLowerCase()))
       );
       setFilteredIPRs(filtered);
     }
@@ -107,13 +105,12 @@ const IPRPage = () => {
   const handleAddIPR = async (formData) => {
     try {
       const response = await fetch(`${BASE_URL}/add-ipr`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          
+          "Content-Type": "application/json",
         },
-        credentials:'include',
-        body: JSON.stringify(formData)
+        credentials: "include",
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
@@ -125,63 +122,90 @@ const IPRPage = () => {
       setIsAddModalOpen(false);
       setError(null);
     } catch (error) {
-      setError('Failed to add IPR: ' + error.message);
-      console.error('Error adding IPR:', error);
+      setError("Failed to add IPR: " + error.message);
+      console.error("Error adding IPR:", error);
     }
   };
 
-  const handleEdit = async (ipr) => {
+  const handleEdit = (ipr) => {
+    setCurrentEditIPR(ipr);
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateIPR = async (updatedData) => {
+    const DataForUpdate = {
+      title: updatedData.title,
+      ipr_number: updatedData.ipr_number,
+      ipr_type: updatedData.ipr_type,
+      status: updatedData.status,
+    };
     try {
-      // You can implement edit modal here or navigate to edit page
-      console.log('Edit IPR:', ipr);
-  
-      const response = await fetch(`${BASE_URL}/update-ipr/${ipr.ipr_id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          
-        },
-        credentials:'include',
-        body: JSON.stringify(updatedData)
-      });
+      const response = await fetch(
+        `${BASE_URL}/update-ipr/${updatedData.ipr_id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(DataForUpdate),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const updatedIPR = await response.json();
+      setIPRs(
+        iprs.map((i) => (i.ipr_id === updatedIPR.ipr_id ? updatedIPR : i))
+      );
+      setIsEditModalOpen(false);
+      setCurrentEditIPR(null);
+      setError(null);
+     
+      window.location.reload();
     } catch (error) {
-      setError('Failed to update IPR: ' + error.message);
+      setError("Failed to update IPR: " + error.message);
+      console.error("Error updating IPR:", error);
     }
   };
 
   const handleDelete = async (ipr) => {
-    if (window.confirm('Are you sure you want to delete this IPR?')) {
+    if (window.confirm("Are you sure you want to delete this IPR?")) {
       try {
         const response = await fetch(`${BASE_URL}/delete-ipr/${ipr.ipr_id}`, {
-          method: 'DELETE',
+          method: "DELETE",
           headers: {
-            
-          }
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
         });
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        setIPRs(iprs.filter(i => i.ipr_id !== ipr.ipr_id));
+        setIPRs(iprs.filter((i) => i.ipr_id !== ipr.ipr_id));
         setError(null);
+        console.log("✅ IPR deleted successfully");
       } catch (error) {
-        setError('Failed to delete IPR: ' + error.message);
-        console.error('Error deleting IPR:', error);
+        setError("Failed to delete IPR: " + error.message);
+        console.error("Error deleting IPR:", error);
       }
     }
   };
 
   const handleView = (ipr) => {
-    console.log('View IPR:', ipr);
+    console.log("View IPR:", ipr);
     // Implement view functionality
   };
 
   const stats = {
     total: filteredIPRs.length,
-    granted: filteredIPRs.filter(ipr => ipr.status === 'Granted').length,
-    pending: filteredIPRs.filter(ipr => ipr.status === 'Pending').length,
-    patents: filteredIPRs.filter(ipr => ipr.ipr_type === 'Patent').length
+    granted: filteredIPRs.filter((ipr) => ipr.status === "Granted").length,
+    pending: filteredIPRs.filter((ipr) => ipr.status === "Pending").length,
+    patents: filteredIPRs.filter((ipr) => ipr.ipr_type === "Patent").length,
   };
 
   if (loading) {
@@ -189,18 +213,22 @@ const IPRPage = () => {
   }
 
   return (
-    <div className="min-h-screen py-24" style={{ background: 'linear-gradient(135deg, #0a0613 0%, #150d27 100%)' }}>
+    <div
+      className="min-h-screen py-24"
+      style={{
+        background: "linear-gradient(135deg, #0a0613 0%, #150d27 100%)",
+      }}
+    >
       <Header />
-      
+
       <ErrorBanner error={error} />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-16">
         <PageHeader onAddClick={() => setIsAddModalOpen(true)} />
 
-        <SearchBar 
-          searchTerm={searchTerm} 
-          onSearchChange={setSearchTerm} 
-        />
+        <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+
+        {/* Admin Status Indicator */}
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -236,14 +264,15 @@ const IPRPage = () => {
 
         {/* IPR Table or Empty State */}
         {filteredIPRs.length > 0 ? (
-          <IPRTable 
-            iprs={filteredIPRs} 
+          <IPRTable
+            iprs={filteredIPRs}
             onEdit={handleEdit}
             onDelete={handleDelete}
             onView={handleView}
+            isAdmin={isAdmin}
           />
         ) : (
-          <EmptyState 
+          <EmptyState
             hasSearchTerm={!!searchTerm}
             searchTerm={searchTerm}
             onAddClick={() => setIsAddModalOpen(true)}
@@ -252,10 +281,17 @@ const IPRPage = () => {
       </div>
 
       {/* Add IPR Modal */}
-      <AddIPRModal 
+      <AddIPRModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         onSubmit={handleAddIPR}
+      />
+
+      <EditIPRModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        iprData={currentEditIPR}
+        onSubmit={handleUpdateIPR}
       />
     </div>
   );

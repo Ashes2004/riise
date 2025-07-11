@@ -1,7 +1,7 @@
 import React from 'react';
 import { Edit, Trash2, Eye, Calendar, Users, ExternalLink } from 'lucide-react';
 
-const PaperCard = ({ paper, onEdit, onDelete, onView }) => {
+const PaperCard = ({ paper, onEdit, onDelete, onView , isAdmin }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'Published':
@@ -54,20 +54,22 @@ const PaperCard = ({ paper, onEdit, onDelete, onView }) => {
           >
             <Eye size={16} />
           </button>
-          <button
+       
+          
+           {isAdmin && ( <button
             onClick={() => onEdit(paper)}
             className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
             title="Edit paper"
           >
             <Edit size={16} />
-          </button>
-          <button
+          </button>)} 
+          {isAdmin && (  <button
             onClick={() => onDelete(paper)}
             className="p-2 text-white/60 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
             title="Delete paper"
           >
             <Trash2 size={16} />
-          </button>
+          </button>)}
         </div>
       </div>
       

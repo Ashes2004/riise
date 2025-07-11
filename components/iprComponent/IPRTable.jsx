@@ -1,7 +1,7 @@
 import React from 'react';
 import { FileText, Edit, Trash2, Eye } from 'lucide-react';
 
-const IPRTable = ({ iprs, onEdit, onDelete, onView }) => {
+const IPRTable = ({ iprs, onEdit, onDelete, onView  , isAdmin}) => {
   const getStatusBadge = (status) => {
     const statusColors = {
       'Filed': 'bg-blue-100 text-blue-800',
@@ -101,20 +101,20 @@ const IPRTable = ({ iprs, onEdit, onDelete, onView }) => {
                     >
                       <Eye className="w-4 h-4" />
                     </button>
-                    <button
+                  {isAdmin && ( <button
                       onClick={() => onEdit(ipr)}
                       className="text-green-400 hover:text-green-300 p-1"
                       title="Edit IPR"
                     >
                       <Edit className="w-4 h-4" />
-                    </button>
-                    <button
+                    </button>)} 
+                    {isAdmin && (  <button
                       onClick={() => onDelete(ipr)}
                       className="text-red-400 hover:text-red-300 p-1"
                       title="Delete IPR"
                     >
                       <Trash2 className="w-4 h-4" />
-                    </button>
+                    </button>)}
                   </div>
                 </td>
               </tr>
