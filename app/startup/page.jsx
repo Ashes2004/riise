@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import Header from "@/components/universal/Header";
 import { useRouter } from "next/navigation";
+import RIISEBotWidget from "@/components/universal/RiiseBot";
 
 const API_BASE_URL = "https://riise.onrender.com";
 
@@ -757,6 +758,7 @@ function StartupHub() {
         onClose={() => setStartupToView(null)}
         startup={startupToView}
       />
+      <RIISEBotWidget/>
     </div>
   );
 }

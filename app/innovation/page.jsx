@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Header from "@/components/universal/Header";
 import { useRouter } from "next/navigation";
+import RIISEBotWidget from "@/components/universal/RiiseBot";
 
 const InnovationTrackingDashboard = () => {
   const [innovations, setInnovations] = useState([]);
@@ -846,6 +847,8 @@ const InnovationTrackingDashboard = () => {
           </div>
         </div>
       )}
+
+      <RIISEBotWidget/>
     </div>
   );
 };

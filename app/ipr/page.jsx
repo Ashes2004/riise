@@ -12,6 +12,7 @@ import ErrorBanner from "@/components/iprComponent/ErrorBanner";
 import LoadingSpinner from "@/components/iprComponent/LoadingSpinner";
 import EditIPRModal from "@/components/iprComponent/EditIPRModal";
 import { useRouter } from "next/navigation";
+import RIISEBotWidget from "@/components/universal/RiiseBot";
 
 const IPRPage = () => {
   const [iprs, setIPRs] = useState([]);
@@ -293,6 +294,9 @@ const IPRPage = () => {
         iprData={currentEditIPR}
         onSubmit={handleUpdateIPR}
       />
+
+
+      <RIISEBotWidget/>
     </div>
   );
 };

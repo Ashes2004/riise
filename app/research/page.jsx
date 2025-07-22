@@ -15,6 +15,7 @@ import ScholarSearch from "@/components/researchComponent/ScholarSerach";
 // API service
 import researchService from "../api/researchService";
 import Header from "@/components/universal/Header";
+import RIISEBotWidget from "@/components/universal/RiiseBot";
 
 const ResearchDashboard = () => {
   const [papers, setPapers] = useState([]);
@@ -392,6 +393,8 @@ const ResearchDashboard = () => {
           )}
         </Modal>
       </div>
+
+      <RIISEBotWidget/>
     </div>
   );
 };

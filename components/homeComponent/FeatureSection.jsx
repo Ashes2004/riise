@@ -4,10 +4,11 @@ import { motion } from 'framer-motion';
 export default function FeatureSection() {
   return (
     <motion.div
-          className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
+          className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 "
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
+          id='feature'
         >
          
           {/* Research Management */}

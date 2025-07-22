@@ -200,9 +200,9 @@ export default function UserProfile() {
 
     try {
       const response = await fetch(
-        "https://riise.onrender.com/api/v1/users/update_profile",
+        "https://riise.onrender.com/api/v1/users/update_profile_field",
         {
-          method: "PUT",
+          method: "PATCH",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
